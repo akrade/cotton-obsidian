@@ -14,6 +14,16 @@ AI assistant plugin for Obsidian with Cotton coding standards and preferences.
 - **Note Context** - Includes current note, selection, and backlinks
 - **Multiple Models** - Choose Sonnet, Opus, or Haiku
 
+## Why Use This?
+
+You're planning a new React component in Obsidian. You select your API notes and ask Claude how to structure it.
+
+**Without Cotton AI:** You copy-paste your team's coding conventions into the chat every time.
+
+**With Cotton AI:** Claude already knows your standards. It responds with code using your `forwardRef` patterns, your naming conventions, your token system - because your `.pref.md` files are loaded automatically.
+
+The plugin turns Obsidian into a context-aware AI workspace where Claude understands "how we do things here."
+
 ## Installation
 
 ### Via BRAT (Recommended)
