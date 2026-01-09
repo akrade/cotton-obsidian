@@ -2,9 +2,10 @@
  * Cotton Chat Sidebar View
  */
 
-import { ItemView, WorkspaceLeaf, MarkdownRenderer } from 'obsidian';
+import { ItemView, WorkspaceLeaf, MarkdownRenderer, Notice, setIcon, TFolder, TFile } from 'obsidian';
 import type CottonPlugin from '../main';
 import type { ChatMessage } from '../types';
+import { ResponseSaveModal } from '../modals/response-save-modal';
 
 export const CHAT_VIEW_TYPE = 'cotton-chat-view';
 
@@ -210,10 +211,29 @@ Respond concisely and helpfully. Use markdown formatting.`;
     if (message.role === 'user') {
       msgEl.textContent = message.content;
     } else {
+      // Add action icons for assistant messages
+      const actionsEl = msgEl.createDiv({ cls: 'cotton-message-actions' });
+
+      const copyBtn = actionsEl.createEl('button', {
+        cls: 'cotton-action-icon',
+        attr: { 'aria-label': 'Copy to clipboard' }
+      });
+      setIcon(copyBtn, 'copy');
+      copyBtn.addEventListener('click', () => this.copyToClipboard(message.content));
+
+      const saveBtn = actionsEl.createEl('button', {
+        cls: 'cotton-action-icon',
+        attr: { 'aria-label': 'Save to note' }
+      });
+      setIcon(saveBtn, 'save');
+      saveBtn.addEventListener('click', () => this.openSaveModal(message));
+
+      // Render markdown content
+      const contentEl = msgEl.createDiv({ cls: 'cotton-message-content' });
       MarkdownRenderer.render(
         this.app,
         message.content,
-        msgEl,
+        contentEl,
         '',
         this.plugin
       );
@@ -221,6 +241,15 @@ Respond concisely and helpfully. Use markdown formatting.`;
 
     // Scroll to bottom
     this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+  }
+
+  private async copyToClipboard(content: string): Promise<void> {
+    await navigator.clipboard.writeText(content);
+    new Notice('Copied to clipboard');
+  }
+
+  private openSaveModal(message: ChatMessage): void {
+    new ResponseSaveModal(this.app, this.plugin, message).open();
   }
 
   private addThinkingIndicator(): HTMLElement | null {

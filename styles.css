@@ -186,3 +186,162 @@
 .cotton-send-btn {
   font-size: 0.875rem;
 }
+
+/* Message Action Icons */
+.cotton-message-assistant {
+  position: relative;
+}
+
+.cotton-message-actions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.cotton-message-assistant:hover .cotton-message-actions {
+  opacity: 1;
+}
+
+.cotton-action-icon {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.cotton-action-icon:hover {
+  color: var(--text-normal);
+  background: var(--background-secondary-alt);
+}
+
+.cotton-action-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cotton-message-content {
+  margin-top: 0;
+}
+
+/* Response Save Modal */
+.cotton-save-modal {
+  padding: 1rem;
+}
+
+.cotton-save-modal h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.cotton-save-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cotton-save-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  background: var(--background-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.cotton-save-option:hover {
+  background: var(--background-secondary-alt);
+}
+
+.cotton-save-option-icon {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.cotton-save-option-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.cotton-save-option-text {
+  flex: 1;
+}
+
+.cotton-save-option-label {
+  font-weight: 500;
+  margin-bottom: 0.125rem;
+}
+
+.cotton-save-option-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Save Modal Input Form */
+.cotton-save-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.cotton-save-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.cotton-save-input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.cotton-save-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+/* Folder Browser */
+.cotton-folder-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+}
+
+.cotton-folder-option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.cotton-folder-option:hover {
+  background: var(--background-secondary);
+}
+
+.cotton-folder-option svg {
+  width: 14px;
+  height: 14px;
+  margin-right: 0.25rem;
+}
+
+.cotton-cancel-btn {
+  margin-top: 0.5rem;
+}
