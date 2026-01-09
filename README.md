@@ -95,10 +95,13 @@ The command opens a modal where you can ask questions. Your current note's conte
 | **Model** | Claude model (Sonnet 4, Opus 4, or Haiku 3.5) |
 | **Personal Prefs** | Path to personal Cotton preferences |
 | **Team Prefs** | Path to team Cotton preferences |
+| **Use Bundled Prefs** | Include Cotton's built-in coding standards |
+| **Context Tags** | Comma-separated tags to filter preferences |
 | **Stream Responses** | Show responses as they generate |
 | **Context Lines** | Lines of note content to include |
 | **Include Backlinks** | Add backlink info to context |
 | **Chat Folder** | Folder to save chat conversations and responses |
+| **MCP Server** | npm package or local path for Claude Code integration |
 
 ## Cotton Preferences
 
@@ -110,6 +113,71 @@ Cotton AI loads coding standards from `.pref.md` files:
 ```
 
 These preferences are automatically included in every Claude conversation, ensuring consistent coding standards.
+
+## MCP Server Integration
+
+Cotton MCP extends Cotton preferences to other AI tools like **Claude Desktop** and **Claude Code (Antigravity)**. This lets you share the same coding standards across all your AI assistants.
+
+### What is MCP?
+
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is Anthropic's open standard for connecting AI assistants to external tools and data sources. Cotton MCP provides:
+
+- `get_preferences` - Get all merged coding standards
+- `search_preferences` - Find specific rules by query
+- `figma_structure` - Get Figma component layer structure
+- `figma_build` - Get Figma Plugin API code
+
+### Setup for Claude Code
+
+Create a `.mcp.json` file in your project root:
+
+```json
+{
+  "mcpServers": {
+    "cotton": {
+      "command": "npx",
+      "args": ["@akrade/cotton-mcp"]
+    }
+  }
+}
+```
+
+Or use a local path for development:
+
+```json
+{
+  "mcpServers": {
+    "cotton": {
+      "command": "node",
+      "args": ["/path/to/cotton/packages/mcp/bin/cotton-mcp.js"]
+    }
+  }
+}
+```
+
+### Setup for Claude Desktop
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS):
+
+```json
+{
+  "mcpServers": {
+    "cotton": {
+      "command": "npx",
+      "args": ["@akrade/cotton-mcp"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop to load the server.
+
+### Best Practices
+
+- **Use project-level `.mcp.json`** - Scope servers to specific projects
+- **Pin versions** - Use `@akrade/cotton-mcp@0.1.0` instead of `@latest`
+- **Add `.mcp.json` to `.gitignore`** if it contains local paths
+- **Commit `.mcp.json`** if it uses published packages (for team sharing)
 
 ## Development
 
