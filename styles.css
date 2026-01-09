@@ -420,3 +420,59 @@
 .cotton-thinking {
   display: none;
 }
+
+/* Preferences Status in Settings */
+.cotton-prefs-status {
+  background: var(--background-secondary);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.cotton-prefs-empty {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.cotton-prefs-summary {
+  margin-bottom: 0.5rem;
+}
+
+.cotton-prefs-count {
+  font-weight: 500;
+  color: var(--text-success);
+}
+
+.cotton-prefs-tags {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.cotton-prefs-list {
+  font-size: 0.875rem;
+}
+
+.cotton-prefs-list summary {
+  cursor: pointer;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.cotton-prefs-list summary:hover {
+  color: var(--text-normal);
+}
+
+.cotton-prefs-list ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.25rem;
+}
+
+.cotton-prefs-list li {
+  margin-bottom: 0.25rem;
+}
+
+.cotton-prefs-item-tags {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}

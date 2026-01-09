@@ -58,6 +58,10 @@ export class CottonSettingTab extends PluginSettingTab {
 
     containerEl.createEl('h3', { text: 'Preferences' });
 
+    // Preferences Status
+    const statusContainer = containerEl.createDiv({ cls: 'cotton-prefs-status' });
+    this.renderPreferencesStatus(statusContainer);
+
     // Personal Preferences Path
     new Setting(containerEl)
       .setName('Personal Preferences Path')
@@ -172,5 +176,47 @@ export class CottonSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
       );
+  }
+
+  private renderPreferencesStatus(container: HTMLElement): void {
+    container.empty();
+
+    const prefs = this.plugin.preferences.getLoadedPreferences();
+    const merged = this.plugin.preferences.getMergedResult();
+
+    if (prefs.length === 0) {
+      const noPrefs = container.createDiv({ cls: 'cotton-prefs-empty' });
+      noPrefs.textContent = 'No preferences loaded';
+      return;
+    }
+
+    const summary = container.createDiv({ cls: 'cotton-prefs-summary' });
+    summary.createEl('span', {
+      text: `${prefs.length} preference${prefs.length === 1 ? '' : 's'} loaded`,
+      cls: 'cotton-prefs-count'
+    });
+
+    if (merged && merged.matchedTags.length > 0) {
+      summary.createEl('span', {
+        text: ` (tags: ${merged.matchedTags.join(', ')})`,
+        cls: 'cotton-prefs-tags'
+      });
+    }
+
+    // List loaded preferences
+    const list = container.createEl('details', { cls: 'cotton-prefs-list' });
+    list.createEl('summary', { text: 'View loaded preferences' });
+
+    const ul = list.createEl('ul');
+    for (const pref of prefs) {
+      const li = ul.createEl('li');
+      li.createEl('strong', { text: pref.id || 'unnamed' });
+      if (pref.tags && pref.tags.length > 0) {
+        li.createEl('span', {
+          text: ` [${pref.tags.join(', ')}]`,
+          cls: 'cotton-prefs-item-tags'
+        });
+      }
+    }
   }
 }
