@@ -71,11 +71,25 @@ export class PreferencesLoader {
 
     try {
       // Find the cotton-ai package preferences directory
-      const cottonAiPath = require.resolve('@akrade/cotton-ai');
-      const packageDir = path.dirname(path.dirname(cottonAiPath));
-      const prefsDir = path.join(packageDir, 'preferences');
+      // Try multiple possible locations
+      const possiblePaths = [
+        // Development: node_modules in project
+        path.join(process.cwd(), 'node_modules', '@akrade', 'cotton-ai', 'preferences'),
+        // Obsidian plugin location
+        path.join(__dirname, '..', 'node_modules', '@akrade', 'cotton-ai', 'preferences'),
+        // Fallback: resolve from module path
+        path.join(path.dirname(require.resolve('@akrade/cotton-ai/package.json')), 'preferences'),
+      ];
 
-      if (fs.existsSync(prefsDir)) {
+      let prefsDir: string | null = null;
+      for (const p of possiblePaths) {
+        if (fs.existsSync(p)) {
+          prefsDir = p;
+          break;
+        }
+      }
+
+      if (prefsDir) {
         const files = await glob('*.pref.md', { cwd: prefsDir });
 
         for (const file of files) {
@@ -87,6 +101,8 @@ export class PreferencesLoader {
             preferences.push({ ...pref, priority: pref.priority || 100 });
           }
         }
+      } else {
+        console.warn('Cotton AI preferences directory not found');
       }
     } catch (error) {
       console.warn('Failed to load bundled preferences:', error);
