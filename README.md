@@ -1,5 +1,9 @@
 # Cotton AI for Obsidian
 
+[![GitHub release](https://img.shields.io/github/v/release/akrade/cotton-obsidian)](https://github.com/akrade/cotton-obsidian/releases)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Obsidian](https://img.shields.io/badge/Obsidian-Plugin-7c3aed)](https://obsidian.md/)
+
 AI assistant plugin for Obsidian with Cotton coding standards and preferences.
 
 ## Features
