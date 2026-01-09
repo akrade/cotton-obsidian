@@ -1,0 +1,108 @@
+/* Cotton AI Obsidian Plugin Styles */
+
+/* Modal */
+.cotton-ask-claude-modal {
+  padding: 1rem;
+}
+
+.cotton-ask-claude-modal h2 {
+  margin-bottom: 0.5rem;
+}
+
+.cotton-context-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+/* Input */
+.cotton-input-container {
+  margin-bottom: 1rem;
+}
+
+.cotton-input {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Selection preview */
+.cotton-selection-preview {
+  background: var(--background-secondary);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.cotton-selection-preview code {
+  color: var(--text-muted);
+}
+
+/* Buttons */
+.cotton-button-container {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+/* Response */
+.cotton-response {
+  background: var(--background-secondary);
+  padding: 1rem;
+  border-radius: 4px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.cotton-thinking {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.cotton-error {
+  color: var(--text-error);
+}
+
+.cotton-response-content {
+  line-height: 1.6;
+}
+
+.cotton-response-content pre {
+  background: var(--background-primary);
+  padding: 0.75rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.cotton-response-content code {
+  font-size: 0.875rem;
+}
+
+/* Sidebar (for future chat view) */
+.cotton-sidebar {
+  padding: 1rem;
+}
+
+.cotton-chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cotton-message {
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+.cotton-message--user {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  margin-left: 2rem;
+}
+
+.cotton-message--assistant {
+  background: var(--background-secondary);
+  margin-right: 2rem;
+}

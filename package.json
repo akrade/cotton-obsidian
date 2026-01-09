@@ -1,0 +1,36 @@
+{
+  "name": "cotton-obsidian",
+  "version": "0.1.0",
+  "description": "Cotton AI assistant plugin for Obsidian",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production",
+    "typecheck": "tsc --noEmit",
+    "version": "node version-bump.mjs && git add manifest.json versions.json"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "builtin-modules": "^4.0.0",
+    "esbuild": "^0.24.2",
+    "obsidian": "^1.7.2",
+    "typescript": "^5.7.2"
+  },
+  "keywords": [
+    "obsidian",
+    "obsidian-plugin",
+    "cotton",
+    "ai",
+    "claude"
+  ],
+  "author": "akrade",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akrade/cotton-obsidian.git"
+  }
+}
