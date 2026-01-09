@@ -26,6 +26,12 @@ export interface CottonSettings {
 
   /** Folder to save chat conversations */
   chatFolder: string;
+
+  /** Use bundled Cotton preferences */
+  useBundledPrefs: boolean;
+
+  /** Context tags to filter preferences */
+  contextTags: string;
 }
 
 export const DEFAULT_SETTINGS: CottonSettings = {
@@ -37,6 +43,8 @@ export const DEFAULT_SETTINGS: CottonSettings = {
   contextLines: 100,
   includeBacklinks: true,
   chatFolder: 'Cotton/Chats',
+  useBundledPrefs: true,
+  contextTags: '',
 };
 
 export interface ChatMessage {
