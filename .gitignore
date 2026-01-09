@@ -19,3 +19,6 @@ npm-debug.log*
 
 # Test
 coverage/
+
+# MCP config (contains local paths)
+.mcp.json
