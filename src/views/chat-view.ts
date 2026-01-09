@@ -29,7 +29,7 @@ export class CottonChatView extends ItemView {
   }
 
   getIcon(): string {
-    return 'message-circle';
+    return 'circle';
   }
 
   async onOpen(): Promise<void> {

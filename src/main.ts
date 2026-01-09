@@ -53,7 +53,7 @@ export default class CottonPlugin extends Plugin {
     });
 
     // Add ribbon icon to toggle chat panel
-    this.addRibbonIcon('message-circle', 'Cotton AI', () => {
+    this.addRibbonIcon('circle', 'Cotton AI', () => {
       this.toggleChatPanel();
     });
 
