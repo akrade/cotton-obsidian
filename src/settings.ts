@@ -86,6 +86,34 @@ export class CottonSettingTab extends PluginSettingTab {
           })
       );
 
+    // Use Bundled Preferences
+    new Setting(containerEl)
+      .setName('Use Bundled Preferences')
+      .setDesc('Include Cotton\'s built-in coding standards and best practices')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.useBundledPrefs)
+          .onChange(async (value) => {
+            this.plugin.settings.useBundledPrefs = value;
+            await this.plugin.saveSettings();
+            await this.plugin.preferences.loadPreferences();
+          })
+      );
+
+    // Context Tags
+    new Setting(containerEl)
+      .setName('Context Tags')
+      .setDesc('Comma-separated tags to filter preferences (e.g., react, typescript, accessibility)')
+      .addText((text) =>
+        text
+          .setPlaceholder('react, typescript')
+          .setValue(this.plugin.settings.contextTags)
+          .onChange(async (value) => {
+            this.plugin.settings.contextTags = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
     containerEl.createEl('h3', { text: 'Behavior' });
 
     // Streaming
