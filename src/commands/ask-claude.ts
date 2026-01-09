@@ -54,17 +54,17 @@ export class AskClaudeModal extends Modal {
       });
     }
 
-    // Buttons
+    // Buttons (secondary left, primary right)
     const buttonContainer = contentEl.createDiv({ cls: 'cotton-button-container' });
+
+    const cancelButton = buttonContainer.createEl('button', { text: 'Cancel' });
+    cancelButton.addEventListener('click', () => this.close());
 
     const askButton = buttonContainer.createEl('button', {
       text: 'Ask',
       cls: 'mod-cta',
     });
     askButton.addEventListener('click', () => this.handleAsk());
-
-    const cancelButton = buttonContainer.createEl('button', { text: 'Cancel' });
-    cancelButton.addEventListener('click', () => this.close());
 
     // Response area
     this.responseEl = contentEl.createDiv({ cls: 'cotton-response' });
