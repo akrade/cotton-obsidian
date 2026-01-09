@@ -5,6 +5,25 @@ All notable changes to Cotton AI for Obsidian will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-01-09
+
+### Added
+
+- **Cotton AI preferences integration** - Uses `@akrade/cotton-ai` package for preference loading
+  - Loads preferences from personal (`~/.cotton/preferences`) and team (`.cotton/preferences`) directories
+  - Settings UI shows loaded preference count with expandable list of IDs and tags
+  - Context tags setting to filter preferences by tag
+  - Use Bundled Preferences toggle
+- **MCP Server integration** - Cotton MCP documentation and configuration
+  - MCP Server setting for local or npm package path
+  - Documentation for Claude Code and Claude Desktop setup
+  - MCP Integration Guide in `docs/mcp-integration.md`
+
+### Changed
+
+- Rewrote preferences loader to use `@akrade/cotton-ai` `parsePreferenceFile`, `mergePreferences`, and `formatForLLM`
+- Preferences now displayed in settings with proper IDs and tags
+
 ## [0.4.0] - 2026-01-09
 
 ### Added
@@ -65,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Settings for API key, model selection, and preferences paths
 - Ribbon icon and command palette integration
 
+[0.5.0]: https://github.com/akrade/cotton-obsidian/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/akrade/cotton-obsidian/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/akrade/cotton-obsidian/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/akrade/cotton-obsidian/compare/v0.1.0...v0.2.0
