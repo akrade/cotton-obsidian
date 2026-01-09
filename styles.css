@@ -80,29 +80,109 @@
   font-size: 0.875rem;
 }
 
-/* Sidebar (for future chat view) */
-.cotton-sidebar {
-  padding: 1rem;
-}
-
-.cotton-chat-messages {
+/* Chat Sidebar Panel */
+.cotton-chat-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  height: 100%;
+  padding: 0;
+}
+
+.cotton-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+}
+
+.cotton-chat-header h4 {
+  margin: 0;
+  flex: 1;
+}
+
+.cotton-model-badge {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--background-primary);
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+}
+
+.cotton-clear-btn {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Messages Area */
+.cotton-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .cotton-message {
   padding: 0.75rem;
   border-radius: 8px;
+  line-height: 1.5;
 }
 
-.cotton-message--user {
+.cotton-message-user {
   background: var(--interactive-accent);
   color: var(--text-on-accent);
-  margin-left: 2rem;
+  margin-left: 1.5rem;
+  border-radius: 8px 8px 0 8px;
 }
 
-.cotton-message--assistant {
+.cotton-message-assistant {
   background: var(--background-secondary);
-  margin-right: 2rem;
+  margin-right: 1.5rem;
+  border-radius: 8px 8px 8px 0;
+}
+
+.cotton-message-assistant pre {
+  background: var(--background-primary);
+  padding: 0.5rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.cotton-message-system {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+/* Input Area */
+.cotton-chat-input-container {
+  padding: 0.75rem;
+  border-top: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+}
+
+.cotton-chat-input {
+  width: 100%;
+  min-height: 60px;
+  resize: none;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+}
+
+.cotton-chat-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.cotton-context-btn {
+  font-size: 0.875rem;
+}
+
+.cotton-send-btn {
+  font-size: 0.875rem;
 }
