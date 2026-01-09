@@ -4,12 +4,13 @@
  * AI assistant with Cotton coding standards and preferences.
  */
 
-import { Plugin } from 'obsidian';
+import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { CottonSettingTab } from './settings';
 import { ClaudeClient } from './ai/client';
 import { PreferencesLoader } from './ai/preferences';
 import { NoteContextBuilder } from './context/note-context';
 import { registerAskClaudeCommand } from './commands/ask-claude';
+import { CottonChatView, CHAT_VIEW_TYPE } from './views/chat-view';
 import { DEFAULT_SETTINGS, type CottonSettings } from './types';
 
 export default class CottonPlugin extends Plugin {
@@ -35,15 +36,52 @@ export default class CottonPlugin extends Plugin {
     // Add settings tab
     this.addSettingTab(new CottonSettingTab(this.app, this));
 
+    // Register chat view
+    this.registerView(
+      CHAT_VIEW_TYPE,
+      (leaf) => new CottonChatView(leaf, this)
+    );
+
     // Register commands
     registerAskClaudeCommand(this);
 
-    // Add ribbon icon
+    // Add command to toggle chat panel
+    this.addCommand({
+      id: 'toggle-chat-panel',
+      name: 'Toggle Chat Panel',
+      callback: () => this.toggleChatPanel(),
+    });
+
+    // Add ribbon icon to toggle chat panel
     this.addRibbonIcon('message-circle', 'Cotton AI', () => {
-      this.app.commands.executeCommandById('cotton-ai:ask-claude-general');
+      this.toggleChatPanel();
     });
 
     console.log('Cotton AI plugin loaded');
+  }
+
+  async toggleChatPanel(): Promise<void> {
+    const leaves = this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE);
+
+    if (leaves.length > 0) {
+      // Panel exists, toggle visibility
+      const leaf = leaves[0];
+      if (leaf.view.containerEl.isShown()) {
+        leaf.detach();
+      } else {
+        this.app.workspace.revealLeaf(leaf);
+      }
+    } else {
+      // Create new panel in left sidebar
+      const leaf = this.app.workspace.getLeftLeaf(false);
+      if (leaf) {
+        await leaf.setViewState({
+          type: CHAT_VIEW_TYPE,
+          active: true,
+        });
+        this.app.workspace.revealLeaf(leaf);
+      }
+    }
   }
 
   onunload(): void {

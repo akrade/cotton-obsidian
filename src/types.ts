@@ -23,6 +23,9 @@ export interface CottonSettings {
 
   /** Include backlinks in context */
   includeBacklinks: boolean;
+
+  /** Folder to save chat conversations */
+  chatFolder: string;
 }
 
 export const DEFAULT_SETTINGS: CottonSettings = {
@@ -33,6 +36,7 @@ export const DEFAULT_SETTINGS: CottonSettings = {
   streamResponses: true,
   contextLines: 100,
   includeBacklinks: true,
+  chatFolder: 'Cotton/Chats',
 };
 
 export interface ChatMessage {
