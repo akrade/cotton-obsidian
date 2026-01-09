@@ -170,25 +170,54 @@ Respond concisely and helpfully. Use markdown formatting.`;
         }
       );
 
-      // Render final markdown
+      // Render final markdown with action icons
       if (responseEl && responseContent) {
         responseEl.empty();
+
+        // Add action icons
+        const actionsEl = responseEl.createDiv({ cls: 'cotton-message-actions' });
+        const copyBtn = actionsEl.createEl('button', {
+          cls: 'cotton-action-icon',
+          attr: { 'aria-label': 'Copy to clipboard' }
+        });
+        setIcon(copyBtn, 'copy');
+
+        const saveBtn = actionsEl.createEl('button', {
+          cls: 'cotton-action-icon',
+          attr: { 'aria-label': 'Save to note' }
+        });
+        setIcon(saveBtn, 'save');
+
+        // Render content
+        const contentEl = responseEl.createDiv({ cls: 'cotton-message-content' });
         await MarkdownRenderer.render(
           this.app,
           responseContent,
-          responseEl,
+          contentEl,
           '',
           this.plugin
         );
-      }
 
-      // Save assistant message
-      const assistantMessage: ChatMessage = {
-        role: 'assistant',
-        content: responseContent,
-        timestamp: Date.now(),
-      };
-      this.messages.push(assistantMessage);
+        // Save assistant message (need reference for button handlers)
+        const assistantMessage: ChatMessage = {
+          role: 'assistant',
+          content: responseContent,
+          timestamp: Date.now(),
+        };
+        this.messages.push(assistantMessage);
+
+        // Add button handlers after message is created
+        copyBtn.addEventListener('click', () => this.copyToClipboard(responseContent));
+        saveBtn.addEventListener('click', () => this.openSaveModal(assistantMessage));
+      } else {
+        // Save assistant message even if no element
+        const assistantMessage: ChatMessage = {
+          role: 'assistant',
+          content: responseContent,
+          timestamp: Date.now(),
+        };
+        this.messages.push(assistantMessage);
+      }
 
       // Auto-save to note
       await this.saveToNote();
