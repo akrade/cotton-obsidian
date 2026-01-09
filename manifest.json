@@ -1,7 +1,7 @@
 {
   "id": "cotton-ai",
   "name": "Cotton AI",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "minAppVersion": "1.5.0",
   "description": "AI assistant with Cotton coding standards and preferences",
   "author": "Akrade",

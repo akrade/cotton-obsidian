@@ -5,9 +5,13 @@ import { copyFileSync } from 'fs';
 
 const prod = process.argv[2] === 'production';
 
+// Create node: prefixed externals for Node.js built-ins
+const nodeBuiltins = builtins.flatMap(m => [m, `node:${m}`]);
+
 const context = await esbuild.context({
   entryPoints: ['src/main.ts'],
   bundle: true,
+  platform: 'node',
   external: [
     'obsidian',
     'electron',
@@ -22,7 +26,7 @@ const context = await esbuild.context({
     '@lezer/common',
     '@lezer/highlight',
     '@lezer/lr',
-    ...builtins,
+    ...nodeBuiltins,
   ],
   format: 'cjs',
   target: 'es2022',

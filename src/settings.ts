@@ -58,6 +58,10 @@ export class CottonSettingTab extends PluginSettingTab {
 
     containerEl.createEl('h3', { text: 'Preferences' });
 
+    // Preferences Status
+    const statusContainer = containerEl.createDiv({ cls: 'cotton-prefs-status' });
+    this.renderPreferencesStatus(statusContainer);
+
     // Personal Preferences Path
     new Setting(containerEl)
       .setName('Personal Preferences Path')
@@ -82,6 +86,34 @@ export class CottonSettingTab extends PluginSettingTab {
           .setValue(this.plugin.settings.teamPrefsPath)
           .onChange(async (value) => {
             this.plugin.settings.teamPrefsPath = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    // Use Bundled Preferences
+    new Setting(containerEl)
+      .setName('Use Bundled Preferences')
+      .setDesc('Include Cotton\'s built-in coding standards and best practices')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.useBundledPrefs)
+          .onChange(async (value) => {
+            this.plugin.settings.useBundledPrefs = value;
+            await this.plugin.saveSettings();
+            await this.plugin.preferences.loadPreferences();
+          })
+      );
+
+    // Context Tags
+    new Setting(containerEl)
+      .setName('Context Tags')
+      .setDesc('Comma-separated tags to filter preferences (e.g., react, typescript, accessibility)')
+      .addText((text) =>
+        text
+          .setPlaceholder('react, typescript')
+          .setValue(this.plugin.settings.contextTags)
+          .onChange(async (value) => {
+            this.plugin.settings.contextTags = value;
             await this.plugin.saveSettings();
           })
       );
@@ -144,5 +176,70 @@ export class CottonSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
       );
+
+    containerEl.createEl('h3', { text: 'MCP Server' });
+
+    // MCP Server
+    const mcpSetting = new Setting(containerEl)
+      .setName('Cotton MCP Server')
+      .addText((text) =>
+        text
+          .setPlaceholder('@akrade/cotton-mcp')
+          .setValue(this.plugin.settings.mcpServer)
+          .onChange(async (value) => {
+            this.plugin.settings.mcpServer = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    const mcpDesc = mcpSetting.descEl.createDiv();
+    mcpDesc.appendText('npm package or local path for Claude Code/.mcp.json. ');
+    mcpDesc.createEl('br');
+    mcpDesc.createEl('code', { text: '@akrade/cotton-mcp' });
+    mcpDesc.appendText(' (public) or ');
+    mcpDesc.createEl('code', { text: '/path/to/cotton-mcp.js' });
+    mcpDesc.appendText(' (local)');
+  }
+
+  private renderPreferencesStatus(container: HTMLElement): void {
+    container.empty();
+
+    const prefs = this.plugin.preferences.getLoadedPreferences();
+    const merged = this.plugin.preferences.getMergedResult();
+
+    if (prefs.length === 0) {
+      const noPrefs = container.createDiv({ cls: 'cotton-prefs-empty' });
+      noPrefs.textContent = 'No preferences loaded';
+      return;
+    }
+
+    const summary = container.createDiv({ cls: 'cotton-prefs-summary' });
+    summary.createEl('span', {
+      text: `${prefs.length} preference${prefs.length === 1 ? '' : 's'} loaded`,
+      cls: 'cotton-prefs-count'
+    });
+
+    if (merged && merged.matchedTags.length > 0) {
+      summary.createEl('span', {
+        text: ` (tags: ${merged.matchedTags.join(', ')})`,
+        cls: 'cotton-prefs-tags'
+      });
+    }
+
+    // List loaded preferences
+    const list = container.createEl('details', { cls: 'cotton-prefs-list' });
+    list.createEl('summary', { text: 'View loaded preferences' });
+
+    const ul = list.createEl('ul');
+    for (const pref of prefs) {
+      const li = ul.createEl('li');
+      li.createEl('strong', { text: pref.meta?.id || 'unnamed' });
+      if (pref.meta?.tags && pref.meta.tags.length > 0) {
+        li.createEl('span', {
+          text: ` [${pref.meta.tags.join(', ')}]`,
+          cls: 'cotton-prefs-item-tags'
+        });
+      }
+    }
   }
 }
