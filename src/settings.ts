@@ -233,10 +233,10 @@ export class CottonSettingTab extends PluginSettingTab {
     const ul = list.createEl('ul');
     for (const pref of prefs) {
       const li = ul.createEl('li');
-      li.createEl('strong', { text: pref.id || 'unnamed' });
-      if (pref.tags && pref.tags.length > 0) {
+      li.createEl('strong', { text: pref.meta?.id || 'unnamed' });
+      if (pref.meta?.tags && pref.meta.tags.length > 0) {
         li.createEl('span', {
-          text: ` [${pref.tags.join(', ')}]`,
+          text: ` [${pref.meta.tags.join(', ')}]`,
           cls: 'cotton-prefs-item-tags'
         });
       }
