@@ -21,9 +21,8 @@ export class CottonSettingTab extends PluginSettingTab {
     containerEl.createEl('h2', { text: 'Cotton AI Settings' });
 
     // API Key
-    new Setting(containerEl)
+    const apiKeySetting = new Setting(containerEl)
       .setName('Claude API Key')
-      .setDesc('Your Anthropic API key for Claude')
       .addText((text) =>
         text
           .setPlaceholder('sk-ant-...')
@@ -33,6 +32,13 @@ export class CottonSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
       );
+
+    const apiKeyDesc = apiKeySetting.descEl.createDiv();
+    apiKeyDesc.appendText('Your Anthropic API key. ');
+    apiKeyDesc.createEl('a', {
+      text: 'Get your API key',
+      href: 'https://console.anthropic.com/settings/keys',
+    });
 
     // Model Selection
     new Setting(containerEl)
