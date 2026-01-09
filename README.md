@@ -99,3 +99,7 @@ npm run dev
 ## License
 
 Apache License 2.0 - See [LICENSE](LICENSE) for details.
+
+---
+
+Made with Cotton by [Akrade](https://www.akrade.com)
