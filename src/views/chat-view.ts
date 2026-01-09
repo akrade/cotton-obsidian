@@ -6,6 +6,7 @@ import { ItemView, WorkspaceLeaf, MarkdownRenderer, Notice, setIcon, TFolder, TF
 import type CottonPlugin from '../main';
 import type { ChatMessage } from '../types';
 import { ResponseSaveModal } from '../modals/response-save-modal';
+import { ThinkingIndicator } from '../components/thinking-indicator';
 
 export const CHAT_VIEW_TYPE = 'cotton-chat-view';
 
@@ -107,7 +108,7 @@ export class CottonChatView extends ItemView {
   }
 
   private async sendMessage(): Promise<void> {
-    if (!this.inputEl || this.isLoading) return;
+    if (!this.inputEl || this.isLoading || !this.messagesEl) return;
 
     const content = this.inputEl.value.trim();
     if (!content) return;
@@ -130,15 +131,22 @@ export class CottonChatView extends ItemView {
     this.inputEl.value = '';
     this.isLoading = true;
 
-    // Add thinking indicator
-    const thinkingEl = this.addThinkingIndicator();
+    // Add thinking indicator (chain of thought style)
+    const thinkingIndicator = new ThinkingIndicator(this.messagesEl);
+    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
 
     try {
       // Build context
+      thinkingIndicator.setStage('understanding');
+
       const activeFile = this.app.workspace.getActiveFile();
       const context = activeFile
         ? await this.plugin.contextBuilder.buildContext(activeFile)
         : null;
+
+      if (context) {
+        thinkingIndicator.setStage('context');
+      }
 
       const prefsPrompt = this.plugin.preferences.formatForSystemPrompt();
       const contextPrompt = context
@@ -153,26 +161,33 @@ ${contextPrompt}
 
 Respond concisely and helpfully. Use markdown formatting.`;
 
-      // Stream response
+      // Buffer response (no raw text display)
+      thinkingIndicator.setStage('thinking');
       let responseContent = '';
-      const responseEl = this.messagesEl?.createDiv({ cls: 'cotton-message cotton-message-assistant' });
-
-      if (thinkingEl) thinkingEl.remove();
+      let hasStartedGenerating = false;
 
       await this.plugin.claude.sendMessage(
         this.messages.filter(m => m.role !== 'system'),
         systemPrompt,
         (chunk) => {
           responseContent += chunk;
-          if (responseEl) {
-            responseEl.textContent = responseContent;
+          // Update to generating stage once we start receiving content
+          if (!hasStartedGenerating && responseContent.length > 0) {
+            hasStartedGenerating = true;
+            thinkingIndicator.setStage('generating');
           }
         }
       );
 
-      // Render final markdown with action icons
-      if (responseEl && responseContent) {
-        responseEl.empty();
+      // Remove thinking indicator
+      thinkingIndicator.setStage('complete');
+      thinkingIndicator.remove();
+
+      // Render final formatted response with smooth appearance
+      if (responseContent) {
+        const responseEl = this.messagesEl.createDiv({
+          cls: 'cotton-message cotton-message-assistant cotton-message-appear'
+        });
 
         // Add action icons
         const actionsEl = responseEl.createDiv({ cls: 'cotton-message-actions' });
@@ -198,7 +213,7 @@ Respond concisely and helpfully. Use markdown formatting.`;
           this.plugin
         );
 
-        // Save assistant message (need reference for button handlers)
+        // Save assistant message
         const assistantMessage: ChatMessage = {
           role: 'assistant',
           content: responseContent,
@@ -206,24 +221,19 @@ Respond concisely and helpfully. Use markdown formatting.`;
         };
         this.messages.push(assistantMessage);
 
-        // Add button handlers after message is created
+        // Add button handlers
         copyBtn.addEventListener('click', () => this.copyToClipboard(responseContent));
         saveBtn.addEventListener('click', () => this.openSaveModal(assistantMessage));
-      } else {
-        // Save assistant message even if no element
-        const assistantMessage: ChatMessage = {
-          role: 'assistant',
-          content: responseContent,
-          timestamp: Date.now(),
-        };
-        this.messages.push(assistantMessage);
+
+        // Scroll to show response
+        this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
       }
 
       // Auto-save to note
       await this.saveToNote();
 
     } catch (error) {
-      if (thinkingEl) thinkingEl.remove();
+      thinkingIndicator.remove();
       this.addSystemMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       this.isLoading = false;
@@ -279,14 +289,6 @@ Respond concisely and helpfully. Use markdown formatting.`;
 
   private openSaveModal(message: ChatMessage): void {
     new ResponseSaveModal(this.app, this.plugin, message).open();
-  }
-
-  private addThinkingIndicator(): HTMLElement | null {
-    if (!this.messagesEl) return null;
-    const el = this.messagesEl.createDiv({ cls: 'cotton-thinking' });
-    el.textContent = 'Thinking...';
-    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
-    return el;
   }
 
   private addSystemMessage(text: string): void {
