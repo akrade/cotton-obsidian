@@ -38,24 +38,19 @@ export class PreferencesLoader {
     // 1. Load bundled preferences from cotton-ai package
     if (this.settings.useBundledPrefs) {
       const bundledPrefs = await this.loadBundledPreferences();
-      console.log('[Cotton] Bundled preferences loaded:', bundledPrefs.length);
       allPreferences.push(...bundledPrefs);
     }
 
     // 2. Load personal preferences (~/.cotton/preferences)
     if (this.settings.personalPrefsPath) {
       const personalPath = this.expandPath(this.settings.personalPrefsPath);
-      console.log('[Cotton] Loading personal prefs from:', personalPath);
       const personalPrefs = await this.loadFromDirectory(personalPath);
-      console.log('[Cotton] Personal preferences loaded:', personalPrefs.length);
       allPreferences.push(...personalPrefs);
     } else {
       // Default personal path
       const defaultPersonalPath = path.join(os.homedir(), '.cotton', 'preferences');
-      console.log('[Cotton] Checking default personal path:', defaultPersonalPath, 'exists:', fs.existsSync(defaultPersonalPath));
       if (fs.existsSync(defaultPersonalPath)) {
         const personalPrefs = await this.loadFromDirectory(defaultPersonalPath);
-        console.log('[Cotton] Default personal preferences loaded:', personalPrefs.length);
         allPreferences.push(...personalPrefs);
       }
     }
@@ -67,7 +62,6 @@ export class PreferencesLoader {
       allPreferences.push(...teamPrefs);
     }
 
-    console.log('[Cotton] Total preferences loaded:', allPreferences.length);
     this.preferences = allPreferences;
     return allPreferences;
   }
@@ -88,7 +82,6 @@ export class PreferencesLoader {
 
       let prefsDir: string | null = null;
       for (const p of possiblePaths) {
-        console.log('[Cotton] Checking bundled path:', p, 'exists:', fs.existsSync(p));
         if (fs.existsSync(p)) {
           prefsDir = p;
           break;
@@ -97,7 +90,6 @@ export class PreferencesLoader {
 
       if (prefsDir) {
         const files = await glob('*.pref.md', { cwd: prefsDir });
-        console.log('[Cotton] Bundled files found:', files.length);
 
         for (const file of files) {
           const filePath = path.join(prefsDir, file);
@@ -110,8 +102,6 @@ export class PreferencesLoader {
             console.warn('[Cotton] Failed to parse bundled preference:', filePath, parseError);
           }
         }
-      } else {
-        console.warn('[Cotton] Bundled preferences directory not found');
       }
     } catch (error) {
       console.warn('[Cotton] Failed to load bundled preferences:', error);
@@ -124,13 +114,11 @@ export class PreferencesLoader {
     const preferences: Preference[] = [];
 
     if (!fs.existsSync(dirPath)) {
-      console.log('[Cotton] Directory does not exist:', dirPath);
       return preferences;
     }
 
     try {
       const files = await glob('**/*.pref.md', { cwd: dirPath });
-      console.log('[Cotton] Found files in', dirPath, ':', files.length);
 
       for (const file of files) {
         const filePath = path.join(dirPath, file);
