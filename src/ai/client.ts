@@ -18,6 +18,7 @@ export class ClaudeClient {
     if (this.settings.apiKey) {
       this.client = new Anthropic({
         apiKey: this.settings.apiKey,
+        dangerouslyAllowBrowser: true, // Required for Electron/Obsidian
       });
     }
   }
