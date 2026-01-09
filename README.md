@@ -179,6 +179,8 @@ Restart Claude Desktop to load the server.
 - **Add `.mcp.json` to `.gitignore`** if it contains local paths
 - **Commit `.mcp.json`** if it uses published packages (for team sharing)
 
+For detailed setup, troubleshooting, and security guidance, see the [MCP Integration Guide](docs/mcp-integration.md).
+
 ## Development
 
 ```bash
