@@ -176,6 +176,29 @@ export class CottonSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
       );
+
+    containerEl.createEl('h3', { text: 'MCP Server' });
+
+    // MCP Server
+    const mcpSetting = new Setting(containerEl)
+      .setName('Cotton MCP Server')
+      .addText((text) =>
+        text
+          .setPlaceholder('@akrade/cotton-mcp')
+          .setValue(this.plugin.settings.mcpServer)
+          .onChange(async (value) => {
+            this.plugin.settings.mcpServer = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    const mcpDesc = mcpSetting.descEl.createDiv();
+    mcpDesc.appendText('npm package or local path for Claude Code/.mcp.json. ');
+    mcpDesc.createEl('br');
+    mcpDesc.createEl('code', { text: '@akrade/cotton-mcp' });
+    mcpDesc.appendText(' (public) or ');
+    mcpDesc.createEl('code', { text: '/path/to/cotton-mcp.js' });
+    mcpDesc.appendText(' (local)');
   }
 
   private renderPreferencesStatus(container: HTMLElement): void {

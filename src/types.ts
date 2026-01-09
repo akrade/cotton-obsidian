@@ -32,6 +32,9 @@ export interface CottonSettings {
 
   /** Context tags to filter preferences */
   contextTags: string;
+
+  /** Cotton MCP server (local path or npm package) */
+  mcpServer: string;
 }
 
 export const DEFAULT_SETTINGS: CottonSettings = {
@@ -45,6 +48,7 @@ export const DEFAULT_SETTINGS: CottonSettings = {
   chatFolder: 'Cotton/Chats',
   useBundledPrefs: true,
   contextTags: '',
+  mcpServer: '@akrade/cotton-mcp',
 };
 
 export interface ChatMessage {
