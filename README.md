@@ -8,11 +8,13 @@ AI assistant plugin for Obsidian with Cotton coding standards and preferences.
 
 ## Features
 
-- **Ask Claude** - AI-powered Q&A with note context
-- **Cotton Preferences** - Coding standards loaded automatically
+- **Chat Sidebar Panel** - Persistent chat in the right sidebar with conversation history
+- **Per-Response Save** - Save individual AI responses to notes with copy/save icons on hover
+- **Ask Claude Modal** - Quick AI-powered Q&A with note context
+- **Cotton Preferences** - Coding standards loaded automatically from `.pref.md` files
 - **Streaming Responses** - See answers as they're generated
 - **Note Context** - Includes current note, selection, and backlinks
-- **Multiple Models** - Choose Sonnet, Opus, or Haiku
+- **Multiple Models** - Choose Sonnet 4, Opus 4, or Haiku 3.5
 
 ## Why Use This?
 
@@ -50,11 +52,32 @@ The plugin turns Obsidian into a context-aware AI workspace where Claude underst
 
 ## Usage
 
-### Ask Claude
+### Chat Sidebar Panel
+
+Click the Cotton icon in the left ribbon or use `Cotton: Open Chat Panel` from the command palette. The chat panel provides:
+
+- Persistent conversation history
+- Add current note as context
+- Clear chat to start fresh
+- **Hover actions** on each response:
+  - Copy icon - Copy response to clipboard
+  - Save icon - Save response to a note
+
+### Save Response Options
+
+When you click the save icon on any AI response:
+
+| Option | Description |
+|--------|-------------|
+| **Quick Save** | Save to `Cotton/Chats/Responses/` with auto-generated filename |
+| **Append to Current Note** | Add response to the active note |
+| **Create New Note** | Choose custom name and location |
+| **Browse...** | Select any folder in your vault |
+
+### Ask Claude Modal
 
 - **Command Palette**: `Cotton: Ask Claude`
 - **Keyboard**: Assign a hotkey in Settings → Hotkeys
-- **Ribbon**: Click the message icon
 
 The command opens a modal where you can ask questions. Your current note's content and any selected text are automatically included as context.
 
@@ -75,6 +98,7 @@ The command opens a modal where you can ask questions. Your current note's conte
 | **Stream Responses** | Show responses as they generate |
 | **Context Lines** | Lines of note content to include |
 | **Include Backlinks** | Add backlink info to context |
+| **Chat Folder** | Folder to save chat conversations and responses |
 
 ## Cotton Preferences
 
@@ -102,7 +126,12 @@ npm run build
 
 # Development (watch mode)
 npm run dev
+
+# Type checking
+npm run typecheck
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
 
 ## Related
 
