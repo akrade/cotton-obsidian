@@ -128,5 +128,21 @@ export class CottonSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
       );
+
+    containerEl.createEl('h3', { text: 'Storage' });
+
+    // Chat Folder
+    new Setting(containerEl)
+      .setName('Chat Folder')
+      .setDesc('Folder to save chat conversations and responses')
+      .addText((text) =>
+        text
+          .setPlaceholder('Cotton/Chats')
+          .setValue(this.plugin.settings.chatFolder)
+          .onChange(async (value) => {
+            this.plugin.settings.chatFolder = value;
+            await this.plugin.saveSettings();
+          })
+      );
   }
 }
